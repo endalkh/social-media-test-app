@@ -29,7 +29,8 @@ class SigninAPIView(generics.CreateAPIView):
                 "email": user.email,
                 "name": user.name,
                 "token": token.key,
-            }
+            },
+            status=status.HTTP_200_OK,
         )
 
 

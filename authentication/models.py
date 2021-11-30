@@ -47,6 +47,7 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=255)
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     groups = models.ManyToManyField(
@@ -71,3 +72,12 @@ class User(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["name", "password"]
+
+    def __str__(self) -> str:
+        return "%s  👉 %s" % (self.name, self.email)
+
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms(self, app_label):
+        return self.is_admin

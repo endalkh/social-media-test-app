@@ -11,7 +11,6 @@ class Friend_LA(generics.ListCreateAPIView):
     An API to LIST and ADD Friend(LA~ list add)
     """
 
-    queryset = friend.Friendship.objects.all()
     serializer_class = serializers.FriendshipSerializer
     pagination_class = pagination.MyOffsetPagination
     filter_backends = (filters.DjangoFilterBackend, SearchFilter)
@@ -29,9 +28,9 @@ class Friend_LA(generics.ListCreateAPIView):
     ]
 
     def get_queryset(self):
-        return friend.Transaction.objects.filter(
+        return friend.Friendship.objects.filter(
             models.Q(_from=utils.get_current_user().id)
-            | models.Q(_to=utils.utils.get_current_user().id)
+            | models.Q(_to=utils.get_current_user().id)
         )
 
 

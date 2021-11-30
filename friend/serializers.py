@@ -12,8 +12,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, validated_data):
         data = super(FriendshipSerializer, self).to_internal_value(validated_data)
-        if utils.get_current_user():
-            data["_from"] = utils.get_current_user()
+        data["_from"] = utils.get_current_user()
         return data
 
     def to_representation(self, instance):
@@ -28,7 +27,12 @@ class FriendshipSerializer(serializers.ModelSerializer):
             "name": instance._from.name,
             "email": instance._from.email,
         }
+        return data
 
     class Meta:
         fields = "__all__"
         model = friend.Friendship
+
+    def create(self, validated_data):
+        instance = friend.Friendship.objects.create(**validated_data)
+        return instance

@@ -24,7 +24,7 @@ test:
 	${MANAGE} test ${app}
 
 admin:
-	${MANAGE} createsuperuser --email=admin@gmail.com --name=admin
+	${MANAGE} createsuperuser --email=admin@gmail.com --name=admin --password=admin
 
 migrate:
 	${MANAGE} makemigrations

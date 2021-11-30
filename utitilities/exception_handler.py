@@ -1,9 +1,9 @@
-from django.utils.encoding import force_str
+from django.utils.encoding import force_text
 from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
+from rest_framework.views import exception_handler
 from django.db import models as exceptions
-from utitilities import exception_handler
 
 
 class CustomValidation(APIException):
@@ -19,9 +19,9 @@ class CustomValidation(APIException):
         if status_code is not None:
             self.status_code = status_code
         if detail is not None:
-            self.detail = {field: [force_str(detail)]}
+            self.detail = {field: [force_text(detail)]}
         else:
-            self.detail = {"detail": [force_str(self.default_detail)]}
+            self.detail = {"detail": [force_text(self.default_detail)]}
 
 
 def custom_exception_handler(exc, context):
@@ -52,5 +52,10 @@ def delete_exception_handler(self, request, id, *args, **kwargs):
                 }
             },
             status=status.HTTP_400_BAD_REQUEST,
+        )
+    except Exception:
+        return Response(
+            {"errors": {"detail": ["Something went wrong"]}},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
     return Response({"id": id}, status=status.HTTP_200_OK)

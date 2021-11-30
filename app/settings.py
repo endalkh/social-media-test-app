@@ -108,7 +108,15 @@ else:
     DATABASES = {
         "default": config("DATABASE_URL", cast=db_url, default="sqlite:///db.sqlite3")
     }
-
+REST_FRAMEWORK = {
+    "EXCEPTION_HANDLER": "utitilities.exception_handler.custom_exception_handler",
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+    ),
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
